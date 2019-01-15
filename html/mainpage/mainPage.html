@@ -60,49 +60,30 @@
 			</div>
 			<div class="container-fluid mt-5">
 				<div class="container p-5">
-					<div class="row">	
-						<div class="col-sm-4"> 
-							<div class="card" style="width: 15rem; margin-right: 10px; margin-left: 10px; background-color: #dfbf9f">
-								<a href="#" data-toggle="modal" data-target="#exampleModal">
-								<img src="2.jpg" alt="" class="card-img-top">
-								</a>
-									<div class="card-body">
-										<h5 class="textp card-title name-project">Новогодний концерт Марлинов</h5> 
-										<p class="textp card-text time-project"><b>Начало: <i>8:30</i></b></p> 
-										<p class="textp card-text aud-project"><b>Аудитория: <i>D734</i></b></p> 
-									</div>
-							</div>
-						</div>
-						<div class="col-sm-4">		
-							<div class="card" style="width: 15rem; margin-right: 10px; margin-left: 10px; background-color: #dfbf9f">
-								<a href="#" data-toggle="modal" data-target="#exampleModal">
-								<img src="2.jpg" alt="" class="card-img-top">
-								</a>
-								
-								<div class="card-body">
-									<h5 class="textp card-title name-project">Голубой огонёк</h5> 
-									<p class="textp card-text time-project"><b>Начало: <i>12:00</i></b></p> 
-									<p class="textp card-text aud-project"><b>Аудитория: <i>А корпус, 4 этаж</i></b></p> 
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">	
+					<div class="row" id="parentcards">
+
+
+						<div class="col-sm-4 cardinfo">	
 							<div class="card" style="width: 15rem; margin-right: 10px; margin-left: 10px; background-color: #dfbf9f">
 								<a href="#" data-toggle="modal" data-target="#exampleModal">
 								<img src="2.jpg" alt="" class="card-img-top">
 								</a>
 								<div class="card-body">
 									<h5 class="textp card-title name-project">Серый огонёк</h5> 
-									<p class="textp card-text time-project"><b>Начало: <i>15:00</i></b></p> 
-									<p class="textp card-text aud-project"><b>Аудитория: <i>D549</i></b></p> 
+									<p class="textp card-text "><b>Начало: <i class="time-project" >15:00</i></b></p> 
+									<p class="textp card-text "><b>Аудитория: <i class="aud-project" >D549</i></b></p> 
 								</div>
 							</div>	
 						</div>
-						<div class="col-sm-4">
+
+
+
+						<div class="col-sm-4" id="lastcard">
 							<div class="card" style="width: 15rem; margin-right: 10px; margin-top: 10px; margin-left: 10px; background-color: #dfbf9f" >
-								<a href="#"><img src="3.jpg" alt="" class="card-img-top"></a>
+								<a href="../Greetings&Registration/registration.html"><img src="3.jpg" alt="" class="card-img-top"></a>
 							</div>	
 						</div>
+
 					</div>
 			</div>
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
@@ -127,9 +108,53 @@
 		  </div>
 </section>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+    	
+//
+
+	window.onload = function() {
+
+    	var cards = document.getElementsByClassName('cardinfo')
+    	var parentcard = document.getElementById('parentcards')
+    	var lastcard = document.getElementById('lastcard')
+    	
+
+
+
+
+
+    	var settings = {
+		  "async": true,
+		  "crossDomain": true,
+		  "url": "/get",
+		  "method": "POST"
+		}
+
+		$.ajax(settings).done(function (response) {
+
+
+
+			for (var i = 0; i < response.length; i++) {
+				
+				cards[0].getElementsByClassName('name-project')[0].innerHTML = response[i].name
+				cards[0].getElementsByClassName('time-project')[0].innerHTML = response[i].date
+				cards[0].getElementsByClassName('aud-project')[0].innerHTML = response[i].place
+				//cards[0].getElementsByClassName('name-project')[0].innerHTML = json[i].name
+				parentcard.insertBefore(cards[0].cloneNode(true), lastcard)
+			}
+
+
+
+
+		})
+	}
+
+
+    </script>
 </body>
 </html>
 					
