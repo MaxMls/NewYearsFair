@@ -9,7 +9,7 @@ const db = new sqlite3.Database('db.sqlite3')
 
 db.serialize( () => {
 	// инфо по событиям
-	db.run("CREATE TABLE IF NOT EXISTS event (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT NOT NULL, place TEXT NOT NULL, date INTEGER NOT NULL)")
+	db.run("CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT NOT NULL, place TEXT NOT NULL, date INTEGER NOT NULL)")
 })
 
 
@@ -22,14 +22,12 @@ app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-w
 // главная страница
 app.get('/', function (req, res) {
 	res.send('home')
-	
-	//res.json(req.body);
 })
 
 
 // страница с формой добавления
 app.get('/register', function (req, res) {
-	res.send('register')
+	res.send('registration')
 })
 
 
@@ -41,15 +39,25 @@ app.get('/table', function (req, res) {
 
 // добавление события
 app.put('/put', function (req, res) {
-	res.send('table')
-	console.log(req.body);
+	db.run("INSERT INTO events (name, description, place, date) VALUES (?, ?, ?, ?) ", req.body.name, req.body.description, req.body.place, req.body.date)
 })
+
+
+
 
 
 // json инфа о событиях
 app.post('/get', function (req, res) {
-	res.send('table')
-})
+	db.get("SELECT * FROM events", (e, r) => {
+		if(typeof r === undefined) return
+
+
+		r.name
+	
+	})
+}
+
+
 
 
 app.listen(80, function () {
