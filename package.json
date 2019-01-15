@@ -1,0 +1,19 @@
+{
+  "name": "new_years_fair",
+  "version": "1.0.0",
+  "description": "happy new year!!!",
+  "main": "server.js",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "sqlite3": "^4.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "nickita x2, max, alexsander",
+  "license": "ISC"
+}
