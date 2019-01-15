@@ -24,5 +24,6 @@ document.forms[0].addEventListener('submit', function(e){
 	})
 	
 	document.location.href = confirm('Данные успешно отправлены! Желаете снова зарегистрировать мероприятие?') ? "registration.html" : "greeting.html"
-
+	e.stopPropagation()
+	e.preventDefault()
 }, false)
