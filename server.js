@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose()
-const app = require('express')()
+const express = require('express')
+const app = express()
 const bodyParser = require('body-parser')
 
 
@@ -9,53 +10,42 @@ const db = new sqlite3.Database('db.sqlite3')
 
 db.serialize( () => {
 	// инфо по событиям
-	db.run("CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT NOT NULL, place TEXT NOT NULL, date INTEGER NOT NULL)")
+	db.run("CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT NOT NULL, place TEXT NOT NULL, date TEXT NOT NULL)")
 })
 
 
 
 
 
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.json()) // for parsing application/json
+app.use(bodyParser.urlencoded({extended: true})) // for parsing application/x-www-form-urlencoded
 
-// главная страница
-app.get('/', function (req, res) {
-	res.send('home')
-})
-
-
-// страница с формой добавления
-app.get('/register', function (req, res) {
-	res.send('registration')
-})
-
-
-// страница с домиками
-app.get('/table', function (req, res) {
-	res.send('table')
-})
+app.use(express.static('html'))
 
 
 // добавление события
 app.put('/put', function (req, res) {
+	console.log(req.body)
 	db.run("INSERT INTO events (name, description, place, date) VALUES (?, ?, ?, ?) ", req.body.name, req.body.description, req.body.place, req.body.date)
+	res.end()
 })
 
 
 
-
-
-// json инфа о событиях
 app.post('/get', function (req, res) {
-	db.get("SELECT * FROM events", (e, r) => {
+	let json = []
+	db.each("SELECT * FROM events", (e, r) => {
 		if(typeof r === undefined) return
+		json.push(r)
 
-
-		r.name
-	
+	}, (err, count) => {
+		if (err) 
+			console.log(err)
+		else{
+			res.json(json)
+		}
 	})
-}
+})
 
 
 
@@ -71,16 +61,14 @@ app.listen(80, function () {
 
 
 
-/* Пример запроса
+/* //Пример запроса на добавление
 var settings = {
   "async": true,
   "crossDomain": true,
-  "url": "http://localhost/put",
+  "url": "/put",
   "method": "PUT",
   "headers": {
-    "Content-Type": "application/x-www-form-urlencoded",
-    "cache-control": "no-cache",
-    "Postman-Token": "067bed56-ccea-4ca6-9605-e1d8a9bf639f"
+    "Content-Type": "application/x-www-form-urlencoded"
   },
   "data": {
     "name": "Карнавальная вечеринка мясников",
@@ -93,5 +81,20 @@ var settings = {
 $.ajax(settings).done(function (response) {
   console.log(response)
 })
+
+*/
+
+/*
+// Получение
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "/get",
+  "method": "POST"
+}
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
 
 */

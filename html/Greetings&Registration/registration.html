@@ -118,7 +118,7 @@
 
   <div class="container">
     <div class="row main-form">
-      <form class="" method="post" action="#">
+      <form class="" method="get" action="#">
 
         <div class="form-group">
           <label for="name" class="cols-sm-2 control-label">Название мероприятия</label>
@@ -167,17 +167,8 @@
       </form>
     </div>
   </div>
-
-  <script type="text/javascript">
-    var url = window.location.href;
-    if (url.indexOf('#') != -1)
-      result = confirm('Данные успешно отправлены! Желаете снова зарегистрировать мероприятие?');
-
-    if (result == false) {
-      document.location.href = "greeting.html"
-    };
-  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="sendData.js"></script>
 
 </body>
-
 </html>
