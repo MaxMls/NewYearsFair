@@ -3,9 +3,6 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 
-
-
-
 const db = new sqlite3.Database('db.sqlite3')
 
 db.serialize( () => {
@@ -13,15 +10,9 @@ db.serialize( () => {
 	db.run("CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT NOT NULL, place TEXT NOT NULL, date TEXT NOT NULL)")
 })
 
-
-
-
-
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})) // for parsing application/x-www-form-urlencoded
-
 app.use(express.static('html'))
-
 
 // добавление события
 app.put('/put', function (req, res) {
@@ -29,8 +20,6 @@ app.put('/put', function (req, res) {
 	db.run("INSERT INTO events (name, description, place, date) VALUES (?, ?, ?, ?) ", req.body.name, req.body.description, req.body.place, req.body.date)
 	res.end()
 })
-
-
 
 app.post('/get', function (req, res) {
 	let json = []
@@ -46,9 +35,6 @@ app.post('/get', function (req, res) {
 		}
 	})
 })
-
-
-
 
 app.listen(80, function () {
 	console.log('Example app listening on port 80!');

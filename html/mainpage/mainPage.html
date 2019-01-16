@@ -183,7 +183,8 @@
 								<div class="card-body">
 									<h5 class="textp card-title name-project">Серый огонёк</h5> 
 									<p class="textp card-text "><b>Начало: <i class="time-project" >15:00</i></b></p> 
-									<p class="textp card-text "><b>Аудитория: <i class="aud-project" >D549</i></b></p> 
+									<p class="textp card-text "><b>Аудитория: <i class="aud-project" >D549</i></b></p>
+									<span  class="aud-description" style="display: none;" >Скрытое описание</span>
 								</div>
 							</div>	
 						</div>
@@ -202,15 +203,15 @@
 			    <div class="modal-dialog" role="document">
 			      <div class="modal-content">
 			        <div class="modal-header">
-			          <h5 class="modal-title" id="exampleModalLabel">Новогодний концерт Марлинов</h5>
+			          <h5 class="modal-title name-project" id="exampleModalLabel">Новогодний концерт Марлинов</h5>
 			          <button class="close" type="button" data-dismiss="modal" aria-label="CLose">
 			            <span aria-hidden="true">&times;</span>
 			          </button>
 			        </div>
 			        <div class="modal-body">
-			          <p>Описание мероприятия</p>
-			          <p><b>Начало мероприятия: </b><i>8:30</i></p>
-			          <p><b>Место проведения: </b><i>D738</i></p>
+			          <p class="aud-description" >Описание мероприятия</p>
+			          <p><b>Начало мероприятия: </b><i class="time-project" >8:30</i></p>
+			          <p><b>Место проведения: </b><i class="aud-project" >D738</i></p>
 			        </div>
 			        <div class="modal-footer">
 			          <button class="btn btn-secondary" data-dismiss="modal">ОК</button>
@@ -233,6 +234,7 @@
     	var cards = document.getElementsByClassName('cardinfo')
     	var parentcard = document.getElementById('parentcards')
     	var lastcard = document.getElementById('lastcard')
+    	var exampleModal = document.getElementById('exampleModal')
     	
 
 
@@ -249,23 +251,25 @@
 		$.ajax(settings).done(function (response) {
 
 
-
 			for (var i = 0; i < response.length; i++) {
 				
 				cards[0].getElementsByClassName('name-project')[0].innerHTML = response[i].name
 				cards[0].getElementsByClassName('time-project')[0].innerHTML = response[i].date
 				cards[0].getElementsByClassName('aud-project')[0].innerHTML = response[i].place
-				//cards[0].getElementsByClassName('name-project')[0].innerHTML = json[i].name
-				parentcard.insertBefore(cards[0].cloneNode(true), lastcard)
+				cards[0].getElementsByClassName('aud-description')[0].innerHTML = response[i].description
+				let clone = cards[0].cloneNode(true)
+				parentcard.insertBefore(clone, lastcard)
+
+				$(clone).on('click', function(e) {
+					exampleModal.getElementsByClassName('name-project')[0].innerHTML =this.getElementsByClassName('name-project')[0].innerHTML
+					exampleModal.getElementsByClassName('time-project')[0].innerHTML = this.getElementsByClassName('time-project')[0].innerHTML
+					exampleModal.getElementsByClassName('aud-project')[0].innerHTML = this.getElementsByClassName('aud-project')[0].innerHTML
+					exampleModal.getElementsByClassName('aud-description')[0].innerHTML = this.getElementsByClassName('aud-description')[0].innerHTML
+				})
 			}
-
-
-
-
+			document.getElementsByClassName('cardinfo')[0].outerHTML = ''
 		})
 	}
-
-
     </script>
 </body>
 </html>
